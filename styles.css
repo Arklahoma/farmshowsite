@@ -1,0 +1,590 @@
+/* ============================================================
+   Arklahoma Farm and Ranch Show
+   Sizes use rem + clamp() so the page scales smoothly from
+   phones (320px) to wide desktops. Layout switches at:
+     34rem (544px)  two-column price and contact cards
+     37.5rem (600px) side-by-side schedule and hotel sections
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  --green: #062e17;
+  --green-deep: #061f13;
+  --paper: #fffaf0;
+  --ink: #201510;
+  --red: #8c1916;
+  --red-bright: #a81c18;
+  --gold: #f4d48e;
+  --gold-strong: #c9963f;
+  --line: #dcc6a2;
+  --card-bg: #fffaef8c;
+  --shadow: 0 1px 2px #5a3a1024, 0 3px 8px #5a3a1014;
+
+  --heavy: "Roboto Serif", "Superclarendon", Georgia, serif;
+  --display: "Roboto Serif", "Superclarendon", Georgia, serif;
+  --body: Roboto, Arial, Helvetica, sans-serif;
+
+  /* One mockup pixel. The page matches the mockup at 648px wide and scales up evenly to 1037px. */
+  --u: clamp(1px, 100vw / 648, 1.6px);
+
+  /* Fluid type scale */
+  --text-sm: clamp(.8rem, .76rem + .2vw, .9rem);
+  --text: clamp(.9rem, .84rem + .3vw, 1.0625rem);
+  --text-lg: clamp(1rem, .9rem + .5vw, 1.25rem);
+  --h3: clamp(1.05rem, .93rem + .55vw, 1.4rem);
+  --h2: clamp(1.75rem, 1rem + 2.1vw, 3rem);
+
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --space: clamp(1.5rem, 1rem + 2.5vw, 3.25rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-width: 20rem;
+  color: var(--ink);
+  font: 400 max(11px, 11.5 * var(--u))/1.4 var(--body);
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 30%, #fbf1dd, transparent),
+    radial-gradient(ellipse 70% 50% at 70% 70%, #f9edda, transparent),
+    linear-gradient(100deg, #f0e3cf, #f7e9cb 86%, #f0e0c5);
+  background-attachment: fixed;
+}
+h1, h2, h3, p { margin: 0; }
+h2, h3 { line-height: 1.1; }
+a { color: inherit; text-underline-offset: .15em; }
+a:focus-visible { outline: 3px solid #205b9c; outline-offset: 3px; border-radius: 2px; }
+img, svg { max-width: 100%; }
+
+.wrap { width: min(100% - 50 * var(--u), 598 * var(--u)); margin-inline: auto; }
+
+.svg-library, .skip-link, .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip-link:focus {
+  z-index: 10;
+  inset: .75rem auto auto .75rem;
+  width: auto;
+  height: auto;
+  padding: .65rem 1rem;
+  clip-path: none;
+  background: var(--paper);
+}
+
+.icon {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Main navigation ---------- */
+
+.site-nav {
+  color: #fff8e9;
+  background: var(--green-deep);
+  border-bottom: 1px solid #b9a77c;
+}
+.site-nav-links {
+  width: min(100% - 1.5rem, 598 * var(--u));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: clamp(.65rem, 4vw, 2.5rem);
+}
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: .1rem;
+  font-size: clamp(.8rem, 2.05vw, 1rem);
+  font-weight: 700;
+  text-decoration: none;
+}
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--gold); text-decoration: underline; }
+.site-nav a:focus-visible { outline-color: var(--gold); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  place-items: center;
+  padding: calc(7 * var(--u)) 1rem calc(8 * var(--u));
+  /* "cover" keeps the painting's real proportions; it is never stretched */
+  background: #3b7fd0 url("assets/farm-panorama.webp") center 30% / cover no-repeat;
+}
+
+/* The sign is 362 mockup pixels wide (56% of the page at 648px) */
+.hero-sign {
+  container-type: inline-size;
+  position: relative;
+  width: calc(362 * var(--u));
+  filter: drop-shadow(0 2px 3px #1a2a1488) drop-shadow(0 6px 10px #1a2a1440);
+}
+.hero-sign-shape {
+  position: absolute;
+  top: -1.1cqi;
+  left: -2.5%;
+  width: 105%;
+  max-width: none;
+  height: calc(100% + 1.9cqi);
+  overflow: visible;
+}
+.hero-sign-board { fill: url(#sign-paper); stroke: #f8eed4; stroke-width: 2; stroke-linejoin: round; }
+.hero-sign-rule { fill: none; stroke: #5e6b52; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+
+.hero-art { position: relative; display: block; width: 100%; height: auto; overflow: visible; }
+
+.hero-title {
+  position: absolute;
+  z-index: 1;
+  top: 3.04cqi;
+  left: 9.94%;
+  width: 80.66%;
+  margin: 0;
+}
+.hero-title img { display: block; width: 100%; height: auto; }
+
+.hero-ribbon text {
+  fill: #fff4de;
+  font: 800 50px var(--heavy);
+  font-stretch: 104%;
+  letter-spacing: .5px;
+  text-anchor: middle;
+}
+.hero-venue { fill: #17150f; font: 900 30px "Arial Black", Arial, sans-serif; text-anchor: middle; }
+.hero-location { fill: #26231d; font: italic 400 30px Arial, sans-serif; text-anchor: middle; }
+.hero-rule path { fill: none; stroke: #c4a66f; stroke-width: 2; }
+.hero-rule .hero-star { fill: #c98b25; stroke: none; }
+
+.hero-actions {
+  position: relative;
+  display: grid;
+  grid-template-columns: 270fr 277fr;
+  gap: 3.2cqi;
+  margin: 1cqi 10.4% 5.8cqi;
+}
+.hero-actions a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: max(7.8cqi, 1.75rem);
+  padding: .2em .4em;
+  border-radius: 1.1cqi;
+  box-shadow: inset 0 1px 0 #ffffff4d, 0 1px 2px #3a2a0a55;
+  font-size: max(.8rem, 3.6cqi);
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  text-decoration: none;
+}
+.hero-visit { color: #1d1303; background: linear-gradient(#fbd36c, #eaa93a); }
+.hero-exhibit { color: #fff6e6; background: linear-gradient(#b0241f, #8a1316); }
+.hero-actions a:hover { filter: brightness(1.06); box-shadow: 0 0 0 2px #fff5d9, 0 0 0 3px #674114; }
+
+/* Phones: a wider sign, with the whole painting below it so the barn and horses stay in view */
+@media (max-width: 39.99rem) {
+  .hero {
+    padding: .75rem .75rem 26vw;
+    /* Sky color above the painting matches its top edge (#057aeb), with a soft fade over the seam.
+       The painting is 1942x809, so at full width it is 41.66vw tall. */
+    --seam: calc(100% - 41.66vw);
+    background:
+      linear-gradient(#057aeb var(--seam), #057aeb00 calc(var(--seam) + 5vw)),
+      url("assets/farm-panorama.webp") center bottom / 100% auto no-repeat,
+      linear-gradient(#4f9df0, #057aeb var(--seam));
+  }
+  .hero-sign { width: min(100%, 30rem); }
+  .hero-sign-shape { left: -1.5%; width: 103%; }
+  .hero { padding-top: .75rem; }
+}
+
+/* ---------- Fact bar ---------- */
+
+.show-facts {
+  color: #fff8e9;
+  background:
+    linear-gradient(#0b3a1c00 60%, #00140a55),
+    radial-gradient(ellipse 50% 120% at 30% 100%, #0d4020, transparent 70%),
+    linear-gradient(100deg, #083219, #04240f 60%, #062a14);
+  border-top: calc(2 * var(--u)) solid #2c5a1d;
+}
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block: 0;
+  padding: calc(9 * var(--u)) 0 calc(10 * var(--u));
+  list-style: none;
+}
+.fact-grid li { position: relative; padding-inline: calc(4 * var(--u)); text-align: center; }
+.fact-grid li + li::before {
+  content: "";
+  position: absolute;
+  inset: 8% auto 12% 0;
+  width: 1px;
+  background: #b9a77c;
+}
+.fact-grid strong {
+  display: block;
+  color: var(--gold);
+  font: 900 calc(24 * var(--u))/1.15 var(--body);
+  white-space: nowrap;
+}
+.fact-grid small { font-size: .7em; font-weight: 700; }
+.fact-grid .public-days { font-size: calc(21 * var(--u)); }
+.fact-grid li > span {
+  display: block;
+  margin-top: calc(1 * var(--u));
+  font-size: max(11px, 12 * var(--u));
+  font-weight: 500;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.days-short { display: none; }
+
+@media (max-width: 39.99rem) {
+  .fact-grid .public-days { font-size: calc(24 * var(--u)); }
+  .days-full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .days-short { display: inline; }
+}
+
+/* ---------- Shared section parts ---------- */
+
+.section { padding-block: calc(15 * var(--u)) calc(16 * var(--u)); }
+.section + .section { border-top: 1px solid #e3d2b5; }
+.section-intro { min-width: 0; }
+.eyebrow {
+  margin-bottom: calc(4 * var(--u));
+  color: var(--red);
+  font-size: max(10px, 10 * var(--u));
+  font-weight: 900;
+  letter-spacing: .06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+h2 { font: 900 calc(34 * var(--u))/1.03 var(--heavy); letter-spacing: -.012em; }
+.h2-small { font-size: calc(26 * var(--u)); }
+.lede { margin-top: calc(6 * var(--u)); font-size: max(11px, 11.5 * var(--u)); font-weight: 500; line-height: 1.42; }
+
+.card {
+  background: linear-gradient(120deg, #fffbf1b0, #f8ecd59c);
+  border: 1px solid #e0caa4;
+  border-radius: calc(6 * var(--u));
+  box-shadow: 0 1px 2px #6b48162e, 0 calc(2 * var(--u)) calc(6 * var(--u)) #6b481614;
+}
+
+.text-link { display: inline-block; color: #0d1a10; font-weight: 700; text-decoration-thickness: 1px; white-space: nowrap; }
+.text-link:hover, .contact-card a:hover { color: var(--red); }
+
+/* ---------- Schedule ---------- */
+
+.schedule-layout { display: grid; gap: calc(16 * var(--u)); align-items: center; }
+.visit-heading { position: relative; width: fit-content; }
+.visit-heading h2 { font-size: calc(35 * var(--u)); }
+.visit-heading + .lede { font-size: max(11px, 12.5 * var(--u)); }
+.visit-wheat { position: absolute; left: calc(112 * var(--u)); bottom: calc(-2 * var(--u)); width: calc(84 * var(--u)); }
+
+.schedule-board { display: grid; gap: calc(7 * var(--u)); margin: 0; padding: 0; list-style: none; }
+.schedule-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: calc(13 * var(--u));
+  padding: calc(3 * var(--u)) calc(6 * var(--u)) calc(3 * var(--u)) 0;
+  background: linear-gradient(90deg, #fdf4e2d0, #f6e8cdb0);
+  border: 1px solid #e6d3b0;
+  border-radius: calc(6 * var(--u));
+  box-shadow: 0 1px 2px #6b481622;
+}
+.day-tile {
+  display: grid;
+  width: calc(35 * var(--u));
+  overflow: hidden;
+  text-align: center;
+  background: linear-gradient(#fff6dc, #f8e4b0);
+  border: calc(1.5 * var(--u)) solid #c9963f;
+  border-radius: calc(5 * var(--u));
+  box-shadow: 0 1px 2px #6b451040;
+}
+.day-tile span {
+  padding: calc(1 * var(--u)) 0;
+  color: #fff3e0;
+  background: linear-gradient(#b01e1a, #8c1512);
+  font-size: calc(7.5 * var(--u));
+  font-weight: 900;
+  letter-spacing: .04em;
+  line-height: 1.2;
+}
+.day-tile strong {
+  padding: calc(2 * var(--u)) 0 calc(3 * var(--u));
+  color: #10200f;
+  font: 900 calc(16 * var(--u))/1 var(--body);
+}
+.schedule-row h3 { font: 800 calc(12 * var(--u))/1.2 var(--heavy); white-space: nowrap; }
+.schedule-row p { margin-top: calc(1 * var(--u)); font-size: max(10px, 10 * var(--u)); font-weight: 500; line-height: 1.25; }
+.schedule-row .hours {
+  margin: 0;
+  padding: calc(5 * var(--u)) calc(10 * var(--u));
+  color: #13180c;
+  background: linear-gradient(#f8e1a3, #f1d185);
+  border-radius: calc(4 * var(--u));
+  font-size: max(10px, 11 * var(--u));
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---------- Exhibit space ---------- */
+
+.exhibit-heading { display: flex; align-items: center; column-gap: calc(16 * var(--u)); }
+.exhibit-heading h2 { flex: 0 1 auto; font-size: calc(31.2 * var(--u)); }
+.exhibit-wheat { flex: 0 1 calc(165 * var(--u)); min-width: 0; margin-left: auto; }
+.exhibit-heading + .lede { margin-top: calc(2 * var(--u)); font-size: max(10.5px, 11 * var(--u)); }
+
+.sponsor-card {
+  margin-top: calc(12 * var(--u));
+  padding: calc(12 * var(--u)) calc(22 * var(--u)) calc(12 * var(--u));
+  background: linear-gradient(120deg, #fffaeec0, #f8ebd2a0);
+  border: calc(1.5 * var(--u)) solid #d7a24b;
+  border-radius: calc(10 * var(--u));
+  box-shadow: 0 1px 3px #6b48162a;
+}
+.sponsor-meta { display: flex; flex-wrap: wrap; align-items: center; gap: calc(8 * var(--u)) calc(20 * var(--u)); }
+.sponsor-meta h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: calc(9 * var(--u));
+  color: #941b17;
+  font: 800 calc(25 * var(--u))/1.15 var(--heavy);
+  letter-spacing: -.01em;
+}
+.sponsor-price { color: #0e2414; font-size: 1.08em; font-weight: 900; }
+.status {
+  padding: calc(7 * var(--u)) calc(13 * var(--u));
+  color: #1a1306;
+  background: linear-gradient(#fbd982, #eebd58);
+  border-radius: calc(4 * var(--u));
+  box-shadow: 0 1px 2px #6b481633;
+  font-size: calc(13.5 * var(--u));
+  font-weight: 900;
+  letter-spacing: .01em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.dot-list { margin: calc(8 * var(--u)) 0 calc(3 * var(--u)); padding: 0; list-style: none; font-size: calc(14.2 * var(--u)); font-weight: 500; line-height: 1.38; }
+.dot-list li { position: relative; padding-left: calc(19 * var(--u)); }
+.dot-list li::before {
+  content: "";
+  position: absolute;
+  left: calc(4 * var(--u));
+  top: .55em;
+  width: calc(5.5 * var(--u));
+  height: calc(5.5 * var(--u));
+  border-radius: 50%;
+  background: var(--red-bright);
+}
+.sponsor-card .text-link { font-size: calc(14.2 * var(--u)); }
+@media (min-width: 37.5rem) {
+  .sponsor-meta h3 { padding-right: calc(20 * var(--u)); border-right: 1px solid #b59c7a; }
+}
+
+.exhibit-grid {
+  display: grid;
+  gap: calc(13 * var(--u));
+  align-items: start;
+  margin-block: calc(13 * var(--u)) calc(9 * var(--u));
+}
+.exhibit-side { display: grid; gap: calc(11 * var(--u)); }
+.rate-card { overflow: hidden; }
+.rate-header {
+  display: flex;
+  align-items: center;
+  gap: calc(9 * var(--u));
+  padding: calc(5 * var(--u)) calc(13 * var(--u));
+  color: #fff6e4;
+  background: linear-gradient(#0d4421, #06301a 60%, #042512);
+}
+.rate-header .icon { color: var(--gold); font-size: calc(17 * var(--u)); stroke-width: 2; }
+.rate-header h3 { font: 800 calc(14.5 * var(--u))/1.25 var(--heavy); }
+.rate-body { padding: calc(6 * var(--u)) calc(12 * var(--u)) calc(8 * var(--u)); }
+
+/* Price rows: size ······ price */
+.rates { width: 100%; border-collapse: collapse; font-size: max(10.5px, 11.5 * var(--u)); line-height: 1.32; }
+.rates caption {
+  color: #a01d18;
+  font: 800 calc(12.5 * var(--u))/1.3 var(--heavy);
+  text-align: left;
+}
+.rates + .rates { margin-top: calc(5 * var(--u)); }
+.rates + .rates caption { padding-top: calc(5 * var(--u)); border-top: 1px solid #e3d0ae; }
+.rates tbody tr { display: flex; align-items: baseline; }
+.rates tbody th {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  padding: 0;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+.rates tbody th::after {
+  content: "";
+  flex: 1;
+  min-width: 1rem;
+  margin: 0 calc(8 * var(--u));
+  border-bottom: 1.5px dotted #d3c09e;
+  transform: translateY(-.25em);
+}
+.rates td {
+  padding: 0;
+  color: #0d1a0f;
+  font-size: 1.05em;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.seminar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 0 calc(9 * var(--u));
+  padding: calc(7 * var(--u)) calc(12 * var(--u)) calc(8 * var(--u));
+}
+.seminar .icon { margin-top: calc(3 * var(--u)); color: var(--red); font-size: calc(19 * var(--u)); transform: rotate(24deg); }
+.seminar h3 { color: #a01d18; font: 800 calc(14 * var(--u))/1.25 var(--heavy); }
+.seminar p { margin-top: calc(1 * var(--u)); font-size: max(9.5px, 9.5 * var(--u)); font-weight: 500; line-height: 1.3; }
+.seminar strong { color: #0d1a0f; font-size: calc(12 * var(--u)); font-weight: 800; line-height: 1.5; }
+
+.button-green {
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  min-height: calc(25 * var(--u));
+  padding: calc(4 * var(--u)) calc(13 * var(--u));
+  border-radius: calc(4 * var(--u));
+  color: #fffaf0;
+  background: linear-gradient(#0d4421, #052a15);
+  box-shadow: 0 1px 2px #06301a55;
+  font-size: max(10.5px, 11 * var(--u));
+  font-weight: 700;
+  line-height: 1.15;
+  text-decoration: none;
+}
+.button-green:hover { background: #154c2d; }
+
+/* ---------- Hotel ---------- */
+
+.hotel-layout { display: grid; gap: calc(16 * var(--u)); align-items: center; }
+.hotel-card { display: flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(8 * var(--u)) calc(14 * var(--u)); }
+.hotel-logo { flex: none; }
+.hotel-logo img { display: block; width: calc(92 * var(--u)); height: auto; mix-blend-mode: multiply; }
+.hotel-reservations { min-width: 0; padding-left: calc(14 * var(--u)); border-left: 1px solid #b59c7a; }
+.hotel-card h3 { color: #a01d18; font: 800 calc(14 * var(--u))/1.25 var(--heavy); }
+.hotel-card .text-link { margin-top: calc(9 * var(--u)); font-size: max(10.5px, 11.5 * var(--u)); }
+
+/* ---------- Contact ---------- */
+
+.contact-grid { display: grid; gap: calc(18 * var(--u)); margin-top: calc(12 * var(--u)); }
+.contact-card {
+  display: grid;
+  justify-items: start;
+  gap: calc(3 * var(--u));
+  padding: calc(6 * var(--u)) calc(14 * var(--u)) calc(8 * var(--u)) calc(20 * var(--u));
+  border-left: calc(4 * var(--u)) solid #0d1d12;
+  font-style: normal;
+}
+.contact-card h3 { color: #a01d18; font: 800 calc(14 * var(--u))/1.25 var(--heavy); }
+.contact-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  max-width: 100%;
+  color: #0d1a10;
+  font-size: max(10.5px, 11 * var(--u));
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.contact-card .icon { font-size: 1.2em; }
+
+/* ---------- Two-column layouts (tablet and up) ---------- */
+
+@media (min-width: 34rem) {
+  .exhibit-grid { grid-template-columns: minmax(0, 295fr) minmax(0, 290fr); }
+  .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 37.5rem) {
+  .schedule-layout { grid-template-columns: minmax(0, 225fr) minmax(0, 340fr); gap: 0; }
+  .schedule-layout .section-intro { padding-right: calc(27 * var(--u)); }
+  .schedule-board { padding-left: calc(27 * var(--u)); border-left: 1px solid #d4bf9c; }
+
+  .hotel-layout { grid-template-columns: minmax(0, 292fr) minmax(0, 292fr); gap: 0; }
+  .hotel-layout .section-intro { padding-right: calc(18 * var(--u)); }
+}
+
+/* ---------- Phones: one column, larger text ---------- */
+
+@media (max-width: 37.49rem) {
+  :root { --u: 1.3px; }
+  .fact-grid strong, .fact-grid .public-days { font-size: clamp(.85rem, 4.1vw, 1.4rem); }
+  .fact-grid small { font-size: .62em; }
+  .fact-grid li > span { font-size: clamp(.72rem, 3.2vw, .9rem); }
+  h2, .visit-heading h2, .exhibit-heading h2 { font-size: clamp(1.75rem, 8vw, 2.4rem); }
+  .h2-small { font-size: clamp(1.6rem, 7vw, 2.1rem); }
+  .schedule-row { gap: .7rem; padding-right: .5rem; }
+  .schedule-row h3 { font-size: clamp(.9rem, 4.1vw, 1.05rem); }
+  .schedule-row .hours { padding: .4em .6em; font-size: .78rem; }
+  .sponsor-meta h3 { font-size: clamp(1.3rem, 6vw, 1.7rem); }
+  .dot-list, .sponsor-card .text-link { font-size: 1rem; }
+  .visit-wheat { left: auto; right: calc(-70 * var(--u)); }
+}
+@media (max-width: 23rem) {
+  .schedule-row { grid-template-columns: auto 1fr; row-gap: .35rem; }
+  .schedule-row .hours { grid-column: 2; justify-self: start; margin-bottom: .35rem; }
+}
+@media (max-width: 26rem) { .exhibit-wheat { display: none; } }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  color: #f4ead6;
+  background: linear-gradient(100deg, #072c16, #001a0e);
+  font-size: var(--text-sm);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem 2rem;
+  padding-block: 1.25rem;
+}
+.site-footer strong { color: var(--gold); }
+.site-footer a { color: var(--gold); font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* Roboto Serif changes its letter shapes with size ("optical size").
+   Lock it so the headings and the sign look the same at every screen width.
+   (!important because the "font" shorthand in the rules above would reset it.) */
+h2, h3, caption { font-optical-sizing: none !important; font-variation-settings: "opsz" 36 !important; }
+.hero-art text { font-optical-sizing: none !important; font-variation-settings: "opsz" 46 !important; }

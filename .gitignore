@@ -1,0 +1,6 @@
+/.agents/
+/.claude/
+/.codex/
+/.codex-attachments/
+/mockup.jpg
+.DS_Store
